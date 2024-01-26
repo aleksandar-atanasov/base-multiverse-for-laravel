@@ -1,45 +1,14 @@
-# :package_fullname
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/tightenco/:package_name.svg?style=flat-square)](https://packagist.org/packages/tightenco/:package_name)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/tighten/:package_name/.github/workflows/tests.yml?branch=main&label=tests)](https://github.com/tighten/:package_name/actions?query=workflow%3Arun-tests+branch%3Amain)
+A versatile PHP package for converting numeric bases, supporting a wide range from 2 to 62. This comprehensive base converter allows seamless conversion to and from various bases, providing flexibility and precision in numeric representations.
 
-**Note:** Replace ```:author_name``` ```:author_username``` ```:author_email``` ```:package_name``` ```:package_description``` ```:package_php_namespace``` with their correct values in [README.md](README.md), [composer.json](composer.json), and all three files under `src/`, then delete this line.
+## Features
 
-:package_description
-
-## Installation
-
-You can install the package via composer:
-
-```bash
-composer require tightenco/:package_name
-```
-
-## Usage
-
-```
-// Usage code and examples here
-```
-
-## Testing
-
-```bash
-composer test
-```
+- Convert numeric values between bases 2 to 62.
+- Support for both forward and reverse conversions.
 
 ## Contributing
+- If you'd like to contribute, please fork the repository and create a pull request.
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security
-
-If you discover any security related issues, please email hello@tighten.co instead of using the issue tracker.
-
-## Credits
-
-- [:author_name](https://github.com/:author_username)
-- [All Contributors](../../contributors)
-
-## License
-
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+## Licence
+- This package is open-sourced software licensed under the MIT license.
