@@ -5,7 +5,7 @@
         "php-base-multiverse",
         "php"
     ],
-    "homepage": "https://github.com/aleksandar-atanasov/php-base-multiverse",
+    "homepage": "https://github.com/aleksandar-atanasov/base-multiverse-for-laravel",
     "license": "MIT",
     "authors": [
         {
