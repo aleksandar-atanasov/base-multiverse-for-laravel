@@ -2,3 +2,12 @@ composer.lock
 vendor
 .php_cs.cache
 .phpunit.result.cache
+.idea
+build
+storage
+tests/World/database.sqlite
+.DS_Store
+coverage
+.php-cs-fixer.cache
+.phpunit.cache/
+.github/

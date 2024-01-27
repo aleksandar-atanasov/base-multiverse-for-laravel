@@ -1,10 +1,10 @@
 <?php
 
-namespace Tighten\:package_php_namespace\Tests;
+namespace Aleksandar\Multiverse\Tests;
 
 use PHPUnit\Framework\TestCase;
 
-class ExampleTest extends TestCase
+class Test extends TestCase
 {
     /** @test */
     function it_exists()
