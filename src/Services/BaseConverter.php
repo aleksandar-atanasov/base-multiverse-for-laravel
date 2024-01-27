@@ -5,7 +5,7 @@ namespace Aleksandar\Multiverse\Services;
 use Aleksandar\Multiverse\Contracts\ConversionPolicyInterface;
 use InvalidArgumentException;
 
-class BaseConverter implements ConversionPolicyInterface
+final class BaseConverter implements ConversionPolicyInterface
 {
     public function convert(int|string $input, int $fromBase, int $toBase): string
     {

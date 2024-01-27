@@ -4,7 +4,7 @@ namespace Aleksandar\Multiverse;
 
 use Aleksandar\Multiverse\Contracts\ConversionPolicyInterface;
 
-class CustomBaseConverter
+final class CustomBaseConverter
 {
     public function __construct(private readonly ConversionPolicyInterface $converter)
     {

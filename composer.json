@@ -40,7 +40,10 @@
         "laravel": {
             "providers": [
                 "Aleksandar\\Multiverse\\BaseMultiverseServiceProvider"
-            ]
+            ],
+            "aliases": {
+                "Aleksandar\\Multiverse\\Facades": "Aleksandar\\Multiverse\\Facades\\BaseConverter"
+            }
         }
     },
     "minimum-stability": "dev",
