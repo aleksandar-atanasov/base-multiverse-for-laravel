@@ -19,15 +19,15 @@ final class BaseConverter implements ConversionPolicyInterface
             throw new InvalidArgumentException("Invalid base provided. Bases must be integers between 2 and 62.");
         }
 
-        // this is loosely checked
-        if (!$this->validator->isValidCharset($input, $fromBase)) {
-            throw new InvalidCharacterException("Invalid character in input: $input for base: $fromBase");
-        }
-
         if ($fromBase >= 2 && $fromBase <= 36 && $toBase >= 2 && $toBase <= 36) {
-            // Use base_convert for bases 2 to 36
+            // Use base_convert for bases 2 to 36 and the input
+            // is not validated it falls back to the default php implementation
             return base_convert($input, $fromBase, $toBase);
         } else {
+            // this is loosely checked
+            if (!$this->validator->isValidCharset($input, $fromBase)) {
+                throw new InvalidCharacterException("Invalid character in input: $input for base: $fromBase");
+            }
             return $this->customBaseConvert($input, $fromBase, $toBase);
         }
     }
