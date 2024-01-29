@@ -2,45 +2,63 @@
 
 namespace Aleksandar\Multiverse\Services;
 
-use Aleksandar\Multiverse\Contracts\ValidatorInterface;
 use Aleksandar\Multiverse\Contracts\ConversionPolicyInterface;
-use Aleksandar\Multiverse\Exception\InvalidCharacterException;
+use Aleksandar\Multiverse\ValueObjects\BaseInput;
+use Aleksandar\Multiverse\ValueObjects\BaseOutput;
+use Aleksandar\Multiverse\ValueObjects\FromBase;
+use Aleksandar\Multiverse\ValueObjects\ToBase;
 use InvalidArgumentException;
 
-final class BaseConverter implements ConversionPolicyInterface
+final readonly class BaseConverter implements ConversionPolicyInterface
 {
-    public function __construct(private readonly ValidatorInterface $validator)
-    {
-    }
 
-    public function convert(int|string $input, int $fromBase, int $toBase): string
+    public function convert(BaseInput $input, FromBase $fromBase, ToBase $toBase): BaseOutput
     {
-        if (!$this->validator->isValidBase($fromBase) || !$this->validator->isValidBase($toBase)) {
-            throw new InvalidArgumentException("Invalid base provided. Bases must be integers between 2 and 62.");
-        }
-
-        if ($fromBase >= 2 && $fromBase <= 36 && $toBase >= 2 && $toBase <= 36) {
+        if ($fromBase->value() >= 2 && $fromBase->value() <= 36 && $toBase->value() >= 2 && $toBase->value() <= 36) {
             // Use base_convert for bases 2 to 36 and the input
-            // is not validated it falls back to the default php implementation
-            return base_convert($input, $fromBase, $toBase);
-        } else {
-            // this is loosely checked
-            if (!$this->validator->isValidCharset($input, $fromBase)) {
-                throw new InvalidCharacterException("Invalid character in input: $input for base: $fromBase");
-            }
-            return $this->customBaseConvert($input, $fromBase, $toBase);
+            $output = base_convert(
+               num: $input->value(),
+               from_base: $fromBase->value(),
+               to_base: $toBase->value()
+            );
+            return BaseOutput::fromString($output);
+        }
+
+        try {
+            $output = $this->customBaseConvert(
+                input: $input->value(),
+                fromBase: $fromBase->value(),
+                toBase: $toBase->value()
+            );
+            return BaseOutput::fromString($output);
+        }catch (InvalidArgumentException $exception) {
+            // Silently ignore the exception and return a default output
+            return BaseOutput::fromString("0");
         }
     }
 
-    private function customBaseConvert(int|string $input, int $fromBase, int $toBase): string
+    private function customBaseConvert(string $input, int $fromBase, int $toBase): string
     {
         if ($fromBase === $toBase) {
             return $input;
         }
-        // Convert to base 10
+        // Silently ignore negative numbers
+        $input = ltrim($input, '-');
+        // Remove invalid characters from input based on the fromBase value
+        $input = $this->removeInvalidCharacters($input, $fromBase);
+        if ($input === "") {
+            return "0";
+        }
         $decimalValue = $this->baseToDecimal($input, $fromBase);
         // Convert from base 10 to the target base
         return $this->decimalToBase($decimalValue, $toBase);
+    }
+
+    private function removeInvalidCharacters(string $input, int $base): string
+    {
+        $validCharactersMap = config('base-multiverse.valid_chars_map');
+        $validCharacters = $validCharactersMap[$base] ?? '';
+        return preg_replace("/[^$validCharacters]/", '', $input);
     }
 
     private function baseToDecimal(string $input, int $base): float|int
@@ -61,12 +79,8 @@ final class BaseConverter implements ConversionPolicyInterface
         return $decimalValue;
     }
 
-    private function decimalToBase(float|int $decimalValue, int $base): string
+    private function decimalToBase(int $decimalValue, int $base): string
     {
-        if (!$this->validator->isValidBase($base)) {
-            throw new InvalidArgumentException("Unsupported target base. Base must be between 2 and 62.");
-        }
-
         $result = '';
         while ($decimalValue > 0) {
             $remainder = $decimalValue % $base;
