@@ -1,6 +1,8 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A versatile PHP package for converting numeric bases, supporting a wide range from 2 to 62. This comprehensive base converter allows seamless conversion to and from various bases, providing flexibility and precision in numeric representations.
+A versatile PHP package for converting numeric bases, supporting a wide range from 2 to 62.
+Ranges from 2 to 36 are handled by the native php base_convert function.
+Invalid input values based on the base are silently ignored.
 
 ## Features
 
